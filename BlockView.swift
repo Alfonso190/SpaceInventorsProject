@@ -14,31 +14,38 @@ struct BlockView: View {
     
     var body: some View {
         NavigationStack{
-            ScrollView(showsIndicators:false){
                 VStack{
-                    ForEach(myData.blocks){
-                        block in
-                        NavigationLink(destination : InfoBlockView(currentBlock: block)){
-                            ZStack(alignment: .bottomLeading){
-                                Image(block.name)
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fill)
-                                    .shadow(radius: 10)
-                                    .frame(height: 150)
-                                Rectangle().fill(LinearGradient(colors:[.clear,block.colorBlock], startPoint: .top,endPoint: .bottom))
-                                VStack(alignment:.leading){
-                                    Text(block.name)
-                                        .font(.title).bold()
+                    List{
+                        ForEach(myData.blocks){
+                            block in
+                            NavigationLink(destination : InfoBlockView(currentBlock: block)){
+                                ZStack(alignment: .bottomLeading){
+                                    Image(block.name)
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fill)
+                                        .shadow(radius: 10)
+                                        .frame(height: 150)
+                                    Rectangle().fill(LinearGradient(colors:[.clear,block.colorBlock], startPoint: .top,endPoint: .bottom))
+                                    VStack(alignment:.leading){
+                                        Text(block.name)
+                                            .font(.title).bold()
+                                    }
+                                    .foregroundColor(.black)
+                                    .padding()
                                 }
-                                .foregroundColor(.black)
-                                .padding()
+                                .cornerRadius(20)
+                                
                             }
-                            .cornerRadius(20)
-                            .padding(.horizontal)
-                            
+                            .listRowSeparator(.hidden)
+
                         }
-                        
+                        .onDelete {
+                            index in
+                            myData.blocks.remove(atOffsets: index)
+                        }
                     }
+                    .listStyle(.plain)
+                
                 }
                 .navigationTitle("Blocks")
                 .toolbar{
@@ -52,7 +59,6 @@ struct BlockView: View {
                         }
                     }
                 }
-            }
         }
     }
     
